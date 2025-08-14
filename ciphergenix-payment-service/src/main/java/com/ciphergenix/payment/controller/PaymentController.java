@@ -402,18 +402,18 @@ public class PaymentController {
         
         // Simulate subscription plans (in real implementation, this would come from database)
         List<SubscriptionPlanResponse> plans = List.of(
-            createPlan("basic-monthly", "Basic Monthly", "BASIC", new BigDecimal("29.99"), "month", 
-                      "Perfect for small teams getting started", 5, 10000L, 10, "Email"),
-            createPlan("basic-yearly", "Basic Yearly", "BASIC", new BigDecimal("299.99"), "year", 
-                      "Perfect for small teams getting started (save 17%)", 5, 10000L, 10, "Email"),
-            createPlan("professional-monthly", "Professional Monthly", "PROFESSIONAL", new BigDecimal("99.99"), "month", 
-                      "Advanced features for growing businesses", 25, 100000L, 100, "Priority"),
-            createPlan("professional-yearly", "Professional Yearly", "PROFESSIONAL", new BigDecimal("999.99"), "year", 
-                      "Advanced features for growing businesses (save 17%)", 25, 100000L, 100, "Priority"),
-            createPlan("enterprise-monthly", "Enterprise Monthly", "ENTERPRISE", new BigDecimal("299.99"), "month", 
-                      "Full-scale enterprise security platform", -1, -1L, 1000, "24/7 Phone"),
-            createPlan("enterprise-yearly", "Enterprise Yearly", "ENTERPRISE", new BigDecimal("2999.99"), "year", 
-                      "Full-scale enterprise security platform (save 17%)", -1, -1L, 1000, "24/7 Phone")
+            createPlan("basic-monthly", "Basic Monthly", "BASIC", new BigDecimal("19.99"), "month", 
+                      "Essential AI security for small teams", 3, 5000L, 5, "Email"),
+            createPlan("basic-yearly", "Basic Yearly", "BASIC", new BigDecimal("199.99"), "year", 
+                      "Essential AI security for small teams (save 17%)", 3, 5000L, 5, "Email"),
+            createPlan("standard-monthly", "Standard Monthly", "STANDARD", new BigDecimal("49.99"), "month", 
+                      "Advanced protection for growing businesses", 10, 25000L, 25, "Priority Email"),
+            createPlan("standard-yearly", "Standard Yearly", "STANDARD", new BigDecimal("499.99"), "year", 
+                      "Advanced protection for growing businesses (save 17%)", 10, 25000L, 25, "Priority Email"),
+            createPlan("pro-monthly", "Pro Monthly", "PRO", new BigDecimal("99.99"), "month", 
+                      "Enterprise-grade AI security platform", 50, 100000L, 100, "24/7 Phone & Chat"),
+            createPlan("pro-yearly", "Pro Yearly", "PRO", new BigDecimal("999.99"), "year", 
+                      "Enterprise-grade AI security platform (save 17%)", 50, 100000L, 100, "24/7 Phone & Chat")
         );
         
         return ResponseEntity.ok(plans);
@@ -546,30 +546,42 @@ public class PaymentController {
         java.util.Set<String> features = new java.util.HashSet<>();
         switch (planType) {
             case "BASIC":
-                features.add("AI Threat Detection");
-                features.add("Basic Model Protection");
+                features.add("Basic AI Threat Detection");
+                features.add("Data Poisoning Detection");
                 features.add("Email Support");
                 features.add("Standard Encryption");
+                features.add("Basic Dashboard");
+                features.add("Monthly Reports");
                 break;
-            case "PROFESSIONAL":
+            case "STANDARD":
                 features.add("Advanced AI Threat Detection");
+                features.add("Data Poisoning Detection");
+                features.add("Adversarial Attack Detection");
                 features.add("Model Integrity Monitoring");
                 features.add("Real-time Alerts");
                 features.add("API Access");
-                features.add("Priority Support");
+                features.add("Priority Email Support");
                 features.add("Advanced Encryption");
-                features.add("Custom Integrations");
+                features.add("Custom Dashboards");
+                features.add("Weekly Reports");
+                features.add("Webhook Integrations");
                 break;
-            case "ENTERPRISE":
-                features.add("Enterprise AI Security Suite");
-                features.add("Advanced Model Protection");
+            case "PRO":
+                features.add("Complete AI Security Suite");
+                features.add("Advanced Threat Detection");
+                features.add("Model Theft Detection");
+                features.add("Real-time Model Monitoring");
                 features.add("Custom Model Training");
-                features.add("Dedicated Support Team");
-                features.add("SLA Guarantees");
-                features.add("Multi-region Deployment");
                 features.add("Advanced Analytics");
                 features.add("Custom Reporting");
+                features.add("24/7 Phone & Chat Support");
+                features.add("SLA Guarantees");
+                features.add("Multi-region Deployment");
                 features.add("SSO Integration");
+                features.add("White-label Options");
+                features.add("Dedicated Account Manager");
+                features.add("Custom Integrations");
+                features.add("Advanced API Rate Limits");
                 break;
         }
         plan.setFeatures(features);

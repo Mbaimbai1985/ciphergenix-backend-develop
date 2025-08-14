@@ -1,0 +1,532 @@
+{
+  "info": {
+    "name": "CipherGenix Security Engine Service",
+    "description": "Core security operations and cryptographic services",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8083",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "encryption_key_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Service Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/info",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "info"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cryptographic Operations",
+      "item": [
+        {
+          "name": "Encrypt Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plaintext\": \"Sensitive AI model parameters and weights\",\n  \"algorithm\": \"AES-256-GCM\",\n  \"keyId\": \"key_001\",\n  \"metadata\": {\n    \"dataType\": \"model_weights\",\n    \"classification\": \"confidential\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/crypto/encrypt",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "crypto", "encrypt"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Decrypt Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ciphertext\": \"encrypted_data_here\",\n  \"keyId\": \"key_001\",\n  \"algorithm\": \"AES-256-GCM\",\n  \"iv\": \"initialization_vector_here\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/crypto/decrypt",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "crypto", "decrypt"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Hash",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"AI model fingerprint data\",\n  \"algorithm\": \"SHA-256\",\n  \"salt\": \"random_salt_value\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/crypto/hash",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "crypto", "hash"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Key Management",
+      "item": [
+        {
+          "name": "Generate Encryption Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyType\": \"AES\",\n  \"keySize\": 256,\n  \"purpose\": \"MODEL_ENCRYPTION\",\n  \"metadata\": {\n    \"owner\": \"model_integrity_service\",\n    \"environment\": \"production\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/keys/generate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "keys", "generate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Key Information",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/keys/{{encryption_key_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "keys", "{{encryption_key_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Rotate Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/keys/{{encryption_key_id}}/rotate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "keys", "{{encryption_key_id}}", "rotate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke Key",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/keys/{{encryption_key_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "keys", "{{encryption_key_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Digital Signatures",
+      "item": [
+        {
+          "name": "Sign Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"AI model integrity checksum\",\n  \"algorithm\": \"RSA-SHA256\",\n  \"keyId\": \"signing_key_001\",\n  \"metadata\": {\n    \"purpose\": \"model_integrity_verification\",\n    \"timestamp\": \"2024-01-15T10:00:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/signatures/sign",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "signatures", "sign"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Signature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"AI model integrity checksum\",\n  \"signature\": \"digital_signature_here\",\n  \"algorithm\": \"RSA-SHA256\",\n  \"publicKeyId\": \"signing_key_001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/signatures/verify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "signatures", "verify"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Secure Storage",
+      "item": [
+        {
+          "name": "Store Secure Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"Model weights and configuration\",\n  \"dataId\": \"model_001_weights\",\n  \"classification\": \"CONFIDENTIAL\",\n  \"encryption\": {\n    \"enabled\": true,\n    \"algorithm\": \"AES-256-GCM\",\n    \"keyId\": \"storage_key_001\"\n  },\n  \"accessControl\": {\n    \"owners\": [\"model_integrity_service\"],\n    \"readers\": [\"vulnerability_detection_service\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/storage/store",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "storage", "store"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retrieve Secure Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/storage/model_001_weights",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "storage", "model_001_weights"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Secure Data",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/storage/model_001_weights",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "storage", "model_001_weights"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Access Control",
+      "item": [
+        {
+          "name": "Validate Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"jwt_token_here\",\n  \"resource\": \"model_001\",\n  \"action\": \"READ\",\n  \"context\": {\n    \"service\": \"vulnerability_detection\",\n    \"requestId\": \"req_12345\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/access/validate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "access", "validate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Grant Access Permission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"principal\": \"service:model-integrity\",\n  \"resource\": \"model_001\",\n  \"actions\": [\"READ\", \"MONITOR\"],\n  \"conditions\": {\n    \"timeRange\": \"business_hours\",\n    \"ipWhitelist\": [\"10.0.0.0/24\"]\n  },\n  \"expiresAt\": \"2024-12-31T23:59:59Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/access/grant",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "access", "grant"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke Access Permission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"principal\": \"service:model-integrity\",\n  \"resource\": \"model_001\",\n  \"actions\": [\"WRITE\", \"DELETE\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/access/revoke",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "access", "revoke"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Security Audit",
+      "item": [
+        {
+          "name": "Log Security Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"UNAUTHORIZED_ACCESS_ATTEMPT\",\n  \"severity\": \"HIGH\",\n  \"principal\": \"unknown_user\",\n  \"resource\": \"model_001\",\n  \"action\": \"READ_model_weights\",\n  \"outcome\": \"DENIED\",\n  \"metadata\": {\n    \"sourceIp\": \"192.168.1.100\",\n    \"userAgent\": \"curl/7.68.0\",\n    \"requestId\": \"req_98765\"\n  },\n  \"timestamp\": \"2024-01-15T10:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/audit/events",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "audit", "events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Security Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/audit/events?startDate=2024-01-01&endDate=2024-01-31&severity=HIGH",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "audit", "events"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-01-31"
+                },
+                {
+                  "key": "severity",
+                  "value": "HIGH"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Security Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportType\": \"SECURITY_SUMMARY\",\n  \"period\": {\n    \"startDate\": \"2024-01-01\",\n    \"endDate\": \"2024-01-31\"\n  },\n  \"includeMetrics\": true,\n  \"includeTrends\": true,\n  \"format\": \"JSON\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/security-engine/audit/reports",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "security-engine", "audit", "reports"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}

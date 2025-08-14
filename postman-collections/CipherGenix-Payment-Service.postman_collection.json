@@ -1,0 +1,587 @@
+{
+  "info": {
+    "name": "CipherGenix Payment Service",
+    "description": "Payment processing, subscription management, and Stripe integration",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8084",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "customer_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "payment_intent_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "subscription_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subscription Plans",
+      "item": [
+        {
+          "name": "Get All Subscription Plans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/plans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "plans"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Basic Monthly Plan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/plans/basic-monthly",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "plans", "basic-monthly"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Standard Yearly Plan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/plans/standard-yearly",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "plans", "standard-yearly"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pro Monthly Plan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/plans/pro-monthly",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "plans", "pro-monthly"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customer Management",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"name\": \"John Doe\",\n  \"phone\": \"+1234567890\",\n  \"address\": {\n    \"line1\": \"123 Main St\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"postal_code\": \"10001\",\n    \"country\": \"US\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/customers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "customers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/customers/{{customer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "customers", "{{customer_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment Intents",
+      "item": [
+        {
+          "name": "Create Payment Intent (Basic Monthly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1999,\n  \"currency\": \"USD\",\n  \"customerId\": \"{{customer_id}}\",\n  \"description\": \"CipherGenix Basic Monthly Subscription\",\n  \"receiptEmail\": \"john.doe@example.com\",\n  \"metadata\": {\n    \"plan\": \"basic-monthly\",\n    \"service\": \"ciphergenix\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/payment-intents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "payment-intents"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Payment Intent (Standard Yearly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 49999,\n  \"currency\": \"USD\",\n  \"customerId\": \"{{customer_id}}\",\n  \"description\": \"CipherGenix Standard Yearly Subscription\",\n  \"receiptEmail\": \"john.doe@example.com\",\n  \"metadata\": {\n    \"plan\": \"standard-yearly\",\n    \"service\": \"ciphergenix\",\n    \"billing_cycle\": \"yearly\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/payment-intents",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "payment-intents"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Payment Intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentMethodId\": \"pm_card_visa\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/payment-intents/{{payment_intent_id}}/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "payment-intents", "{{payment_intent_id}}", "confirm"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Payment Intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/payment-intents/{{payment_intent_id}}/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "payment-intents", "{{payment_intent_id}}", "cancel"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Create Subscription (Basic Monthly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"priceId\": \"price_basic_monthly\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan_type\": \"basic\",\n    \"billing_interval\": \"month\",\n    \"features\": \"basic_ai_threat_detection,data_poisoning_detection,email_support\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/subscriptions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "subscriptions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Subscription (Standard Yearly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"priceId\": \"price_standard_yearly\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan_type\": \"standard\",\n    \"billing_interval\": \"year\",\n    \"features\": \"advanced_ai_threat_detection,model_integrity_monitoring,api_access,priority_support\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/subscriptions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "subscriptions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Subscription (Pro Monthly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"priceId\": \"price_pro_monthly\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan_type\": \"pro\",\n    \"billing_interval\": \"month\",\n    \"features\": \"complete_ai_security_suite,model_theft_detection,custom_training,24x7_support,sso_integration\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/subscriptions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "subscriptions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/subscriptions/{{subscription_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "subscriptions", "{{subscription_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Checkout Sessions",
+      "item": [
+        {
+          "name": "Create Checkout Session (Basic Monthly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priceId\": \"price_basic_monthly\",\n  \"successUrl\": \"https://ciphergenix.com/success?session_id={CHECKOUT_SESSION_ID}\",\n  \"cancelUrl\": \"https://ciphergenix.com/cancel\",\n  \"customerEmail\": \"john.doe@example.com\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan\": \"basic-monthly\",\n    \"user_limit\": \"3\",\n    \"api_calls_limit\": \"5000\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/checkout/sessions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "checkout", "sessions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Checkout Session (Standard Yearly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priceId\": \"price_standard_yearly\",\n  \"successUrl\": \"https://ciphergenix.com/success?session_id={CHECKOUT_SESSION_ID}\",\n  \"cancelUrl\": \"https://ciphergenix.com/cancel\",\n  \"customerEmail\": \"john.doe@example.com\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan\": \"standard-yearly\",\n    \"user_limit\": \"10\",\n    \"api_calls_limit\": \"25000\",\n    \"discount\": \"17_percent_yearly\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/checkout/sessions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "checkout", "sessions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Checkout Session (Pro Yearly)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priceId\": \"price_pro_yearly\",\n  \"successUrl\": \"https://ciphergenix.com/success?session_id={CHECKOUT_SESSION_ID}\",\n  \"cancelUrl\": \"https://ciphergenix.com/cancel\",\n  \"customerEmail\": \"enterprise@example.com\",\n  \"trialPeriodDays\": 14,\n  \"metadata\": {\n    \"plan\": \"pro-yearly\",\n    \"user_limit\": \"50\",\n    \"api_calls_limit\": \"100000\",\n    \"discount\": \"17_percent_yearly\",\n    \"support_level\": \"24x7_phone_chat\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/checkout/sessions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "checkout", "sessions"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment Methods",
+      "item": [
+        {
+          "name": "Attach Payment Method",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customer_id}}\",\n  \"paymentMethodId\": \"pm_card_visa\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/payment-methods/attach",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "payment-methods", "attach"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Payment Methods",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/customers/{{customer_id}}/payment-methods",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "customers", "{{customer_id}}", "payment-methods"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "item": [
+        {
+          "name": "Create Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentIntentId\": \"{{payment_intent_id}}\",\n  \"amount\": 1999,\n  \"reason\": \"requested_by_customer\",\n  \"metadata\": {\n    \"refund_reason\": \"Customer requested cancellation within trial period\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/refunds",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "refunds"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Handle Stripe Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Stripe-Signature",
+                "value": "t=1641234567,v1=signature_here"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"evt_test_webhook\",\n  \"object\": \"event\",\n  \"api_version\": \"2022-11-15\",\n  \"created\": 1641234567,\n  \"data\": {\n    \"object\": {\n      \"id\": \"pi_test_payment_intent\",\n      \"object\": \"payment_intent\",\n      \"status\": \"succeeded\",\n      \"amount\": 1999,\n      \"currency\": \"usd\",\n      \"customer\": \"cus_test_customer\"\n    }\n  },\n  \"livemode\": false,\n  \"pending_webhooks\": 1,\n  \"request\": {\n    \"id\": \"req_test_request\",\n    \"idempotency_key\": null\n  },\n  \"type\": \"payment_intent.succeeded\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/webhooks/stripe",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "webhooks", "stripe"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}
