@@ -20,21 +20,22 @@ DELETE FROM roles;
 ALTER SEQUENCE roles_role_id_seq RESTART WITH 1;
 
 -- Insert the three core CipherGenix roles
+-- NOTE: USER role is the default role assigned to all new registrations
 INSERT INTO roles (role_uuid, name, authority) VALUES 
 (
     uuid_generate_v4()::varchar(40), 
     'USER', 
-    'ROLE_USER,READ:user,UPDATE:user'
+    'ROLE_USER,READ:user,UPDATE:user,READ:threats,READ:models,READ:dashboard'
 ),
 (
     uuid_generate_v4()::varchar(40), 
     'ADMIN', 
-    'ROLE_ADMIN,READ:user,UPDATE:user,CREATE:user,DELETE:user,READ:admin,UPDATE:admin'
+    'ROLE_ADMIN,READ:user,UPDATE:user,CREATE:user,DELETE:user,READ:admin,UPDATE:admin,READ:threats,UPDATE:threats,READ:models,UPDATE:models,READ:dashboard,UPDATE:dashboard,MANAGE:team'
 ),
 (
     uuid_generate_v4()::varchar(40), 
     'SUPER_ADMIN', 
-    'ROLE_SUPER_ADMIN,READ:user,UPDATE:user,CREATE:user,DELETE:user,READ:admin,UPDATE:admin,CREATE:admin,DELETE:admin,READ:super_admin,UPDATE:super_admin,CREATE:super_admin,DELETE:super_admin'
+    'ROLE_SUPER_ADMIN,READ:user,UPDATE:user,CREATE:user,DELETE:user,READ:admin,UPDATE:admin,CREATE:admin,DELETE:admin,READ:super_admin,UPDATE:super_admin,CREATE:super_admin,DELETE:super_admin,READ:threats,UPDATE:threats,CREATE:threats,DELETE:threats,READ:models,UPDATE:models,CREATE:models,DELETE:models,READ:dashboard,UPDATE:dashboard,CREATE:dashboard,DELETE:dashboard,MANAGE:system,MANAGE:security,MANAGE:platform'
 );
 
 -- Verify the roles were created

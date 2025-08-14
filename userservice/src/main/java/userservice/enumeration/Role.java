@@ -4,12 +4,12 @@ package userservice.enumeration;
  * CipherGenix Security Platform Role Enumeration
  * 
  * Defines the three core roles for the AI security platform:
- * - USER: Standard user with basic access to security features
+ * - USER: Default role assigned to all new registrations with basic access to security features
  * - ADMIN: Administrator with elevated permissions for team management
  * - SUPER_ADMIN: Super administrator with full system access
  */
 public enum Role {
-    USER("USER", "Standard user with basic AI security features access"),
+    USER("USER", "Default role for new users with basic AI security features access"),
     ADMIN("ADMIN", "Administrator with team management capabilities"),
     SUPER_ADMIN("SUPER_ADMIN", "Super administrator with full system access");
     

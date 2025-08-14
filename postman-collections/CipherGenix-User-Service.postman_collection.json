@@ -341,7 +341,7 @@
       "name": "Role & Permission Management",
       "item": [
         {
-          "name": "Update User Role",
+          "name": "Update User Role to ADMIN",
           "request": {
             "method": "PATCH",
             "header": [
@@ -357,6 +357,58 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/updaterole",
+              "host": ["{{base_url}}"],
+              "path": ["user", "updaterole"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role to SUPER_ADMIN",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"SUPER_ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/updaterole",
+              "host": ["{{base_url}}"],
+              "path": ["user", "updaterole"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role to USER (Reset to Default)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"USER\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/user/updaterole",

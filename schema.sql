@@ -157,6 +157,7 @@ RETURNING user_id INTO v_user_id;
 INSERT INTO credentials (credential_uuid, user_id, password)
 VALUES (p_credential_uuid, v_user_id, p_password);
 
+-- Assign USER role as the default role for all new registrations
 INSERT INTO user_roles (user_id, role_id)
 VALUES (v_user_id, (SELECT roles.role_id FROM roles WHERE roles.name = 'USER'));
 
