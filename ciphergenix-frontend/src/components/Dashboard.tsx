@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { VulnerabilityDetectionAPI, DetectionResult, DetectionStatistics, ApiUtils } from '../services/api';
+import WelcomeMessage from './WelcomeMessage';
 
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [systemHealth, setSystemHealth] = useState('healthy');
+  const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
     setIsLoading(false);
-    // Simulate initial load
+    // Check if user has seen welcome message before
+    const hasSeenWelcome = localStorage.getItem('ciphergenix_welcome_seen');
+    if (hasSeenWelcome) {
+      setShowWelcome(false);
+    }
   }, []);
+
+  const handleWelcomeDismiss = () => {
+    setShowWelcome(false);
+    localStorage.setItem('ciphergenix_welcome_seen', 'true');
+  };
 
   const dashboardStyle: React.CSSProperties = {
     minHeight: '100vh',
