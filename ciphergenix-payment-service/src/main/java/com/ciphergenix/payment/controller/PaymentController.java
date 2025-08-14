@@ -391,6 +391,60 @@ public class PaymentController {
     }
 
     /**
+     * Get subscription plans
+     */
+    @GetMapping("/plans")
+    @Operation(summary = "Get subscription plans", 
+               description = "Retrieve all available subscription plans")
+    public ResponseEntity<List<SubscriptionPlanResponse>> getSubscriptionPlans() {
+        
+        logger.info("Getting all subscription plans");
+        
+        // Simulate subscription plans (in real implementation, this would come from database)
+        List<SubscriptionPlanResponse> plans = List.of(
+            createPlan("basic-monthly", "Basic Monthly", "BASIC", new BigDecimal("29.99"), "month", 
+                      "Perfect for small teams getting started", 5, 10000L, 10, "Email"),
+            createPlan("basic-yearly", "Basic Yearly", "BASIC", new BigDecimal("299.99"), "year", 
+                      "Perfect for small teams getting started (save 17%)", 5, 10000L, 10, "Email"),
+            createPlan("professional-monthly", "Professional Monthly", "PROFESSIONAL", new BigDecimal("99.99"), "month", 
+                      "Advanced features for growing businesses", 25, 100000L, 100, "Priority"),
+            createPlan("professional-yearly", "Professional Yearly", "PROFESSIONAL", new BigDecimal("999.99"), "year", 
+                      "Advanced features for growing businesses (save 17%)", 25, 100000L, 100, "Priority"),
+            createPlan("enterprise-monthly", "Enterprise Monthly", "ENTERPRISE", new BigDecimal("299.99"), "month", 
+                      "Full-scale enterprise security platform", -1, -1L, 1000, "24/7 Phone"),
+            createPlan("enterprise-yearly", "Enterprise Yearly", "ENTERPRISE", new BigDecimal("2999.99"), "year", 
+                      "Full-scale enterprise security platform (save 17%)", -1, -1L, 1000, "24/7 Phone")
+        );
+        
+        return ResponseEntity.ok(plans);
+    }
+
+    /**
+     * Get subscription plan by ID
+     */
+    @GetMapping("/plans/{planId}")
+    @Operation(summary = "Get subscription plan", 
+               description = "Retrieve a specific subscription plan by ID")
+    public ResponseEntity<SubscriptionPlanResponse> getSubscriptionPlan(
+            @Parameter(description = "Plan ID") @PathVariable String planId) {
+        
+        logger.info("Getting subscription plan: {}", planId);
+        
+        // Simulate getting plan by ID
+        List<SubscriptionPlanResponse> plans = getSubscriptionPlans().getBody();
+        SubscriptionPlanResponse plan = plans.stream()
+                .filter(p -> p.getId().equals(planId))
+                .findFirst()
+                .orElse(null);
+        
+        if (plan != null) {
+            return ResponseEntity.ok(plan);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
      * Health check endpoint
      */
     @GetMapping("/health")
@@ -468,6 +522,59 @@ public class PaymentController {
         CheckoutSessionResponse response = new CheckoutSessionResponse();
         response.setError(message);
         return response;
+    }
+
+    private SubscriptionPlanResponse createPlan(String id, String name, String planType, BigDecimal price, 
+                                              String billingInterval, String description, Integer userLimit, 
+                                              Long apiCallsLimit, Integer storageLimit, String supportLevel) {
+        SubscriptionPlanResponse plan = new SubscriptionPlanResponse();
+        plan.setId(id);
+        plan.setName(name);
+        plan.setPlanType(planType);
+        plan.setPrice(price);
+        plan.setBillingInterval(billingInterval);
+        plan.setDescription(description);
+        plan.setUserLimit(userLimit);
+        plan.setApiCallsLimit(apiCallsLimit);
+        plan.setStorageLimitGb(storageLimit);
+        plan.setSupportLevel(supportLevel);
+        plan.setTrialPeriodDays(14);
+        plan.setCurrency("USD");
+        plan.setActive(true);
+        
+        // Add features based on plan type
+        java.util.Set<String> features = new java.util.HashSet<>();
+        switch (planType) {
+            case "BASIC":
+                features.add("AI Threat Detection");
+                features.add("Basic Model Protection");
+                features.add("Email Support");
+                features.add("Standard Encryption");
+                break;
+            case "PROFESSIONAL":
+                features.add("Advanced AI Threat Detection");
+                features.add("Model Integrity Monitoring");
+                features.add("Real-time Alerts");
+                features.add("API Access");
+                features.add("Priority Support");
+                features.add("Advanced Encryption");
+                features.add("Custom Integrations");
+                break;
+            case "ENTERPRISE":
+                features.add("Enterprise AI Security Suite");
+                features.add("Advanced Model Protection");
+                features.add("Custom Model Training");
+                features.add("Dedicated Support Team");
+                features.add("SLA Guarantees");
+                features.add("Multi-region Deployment");
+                features.add("Advanced Analytics");
+                features.add("Custom Reporting");
+                features.add("SSO Integration");
+                break;
+        }
+        plan.setFeatures(features);
+        
+        return plan;
     }
 
     // Request/Response DTOs
@@ -744,5 +851,64 @@ public class PaymentController {
         
         public LocalDateTime getCreatedAt() { return createdAt; }
         public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    }
+
+    public static class SubscriptionPlanResponse {
+        private String id;
+        private String name;
+        private String description;
+        private String planType;
+        private BigDecimal price;
+        private String currency;
+        private String billingInterval;
+        private Integer trialPeriodDays;
+        private Integer userLimit;
+        private Long apiCallsLimit;
+        private Integer storageLimitGb;
+        private String supportLevel;
+        private java.util.Set<String> features;
+        private Boolean active;
+
+        public String getId() { return id; }
+        public void setId(String id) { this.id = id; }
+        
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        
+        public String getDescription() { return description; }
+        public void setDescription(String description) { this.description = description; }
+        
+        public String getPlanType() { return planType; }
+        public void setPlanType(String planType) { this.planType = planType; }
+        
+        public BigDecimal getPrice() { return price; }
+        public void setPrice(BigDecimal price) { this.price = price; }
+        
+        public String getCurrency() { return currency; }
+        public void setCurrency(String currency) { this.currency = currency; }
+        
+        public String getBillingInterval() { return billingInterval; }
+        public void setBillingInterval(String billingInterval) { this.billingInterval = billingInterval; }
+        
+        public Integer getTrialPeriodDays() { return trialPeriodDays; }
+        public void setTrialPeriodDays(Integer trialPeriodDays) { this.trialPeriodDays = trialPeriodDays; }
+        
+        public Integer getUserLimit() { return userLimit; }
+        public void setUserLimit(Integer userLimit) { this.userLimit = userLimit; }
+        
+        public Long getApiCallsLimit() { return apiCallsLimit; }
+        public void setApiCallsLimit(Long apiCallsLimit) { this.apiCallsLimit = apiCallsLimit; }
+        
+        public Integer getStorageLimitGb() { return storageLimitGb; }
+        public void setStorageLimitGb(Integer storageLimitGb) { this.storageLimitGb = storageLimitGb; }
+        
+        public String getSupportLevel() { return supportLevel; }
+        public void setSupportLevel(String supportLevel) { this.supportLevel = supportLevel; }
+        
+        public java.util.Set<String> getFeatures() { return features; }
+        public void setFeatures(java.util.Set<String> features) { this.features = features; }
+        
+        public Boolean getActive() { return active; }
+        public void setActive(Boolean active) { this.active = active; }
     }
 }
