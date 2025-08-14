@@ -14,6 +14,7 @@ import userservice.model.Device;
 import userservice.model.User;
 import userservice.repository.UserRepository;
 import userservice.service.UserService;
+import userservice.enumeration.Role;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -138,7 +139,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateRole(String userUuid, String role) {
-        return userRepository.updateRole(userUuid, role);
+        // Validate the role before updating
+        if (!Role.isValid(role)) {
+            throw new ApiException("Invalid role: " + role + ". Valid roles are: USER, ADMIN, SUPER_ADMIN");
+        }
+        
+        // Normalize the role name
+        String normalizedRole = Role.fromString(role).getName();
+        return userRepository.updateRole(userUuid, normalizedRole);
     }
 
     @Override

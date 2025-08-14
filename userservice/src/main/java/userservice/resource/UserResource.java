@@ -103,8 +103,13 @@ public class UserResource {
 
     @PatchMapping("/updaterole")
     public ResponseEntity<Response> updateRole(@NotNull Authentication authentication, @RequestBody RoleRequest roleRequest, HttpServletRequest request) {
-        var updatedUser = userService.updateRole(authentication.getName(), roleRequest.getRole());
-        return ok(getResponse(request, of("user", updatedUser), "User updated successfully", OK));
+        try {
+            var updatedUser = userService.updateRole(authentication.getName(), roleRequest.getRole());
+            return ok(getResponse(request, of("user", updatedUser), 
+                "User role updated successfully to " + roleRequest.getRole(), OK));
+        } catch (IllegalArgumentException e) {
+            return badRequest(getResponse(request, emptyMap(), e.getMessage(), BAD_REQUEST));
+        }
     }
 
     @PatchMapping("/toggleaccountexpired")
