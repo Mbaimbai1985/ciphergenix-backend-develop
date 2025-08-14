@@ -1,0 +1,102 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ciphergenix-model-integrity-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ciphergenix_model_integrity_db
+    username: ${DB_USERNAME:ciphergenix_user}
+    password: ${DB_PASSWORD:ciphergenix_pass}
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: 1
+  
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: ciphergenix-model-integrity-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+  
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/ciphergenix}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# CipherGenix Model Integrity Configuration
+ciphergenix:
+  model-integrity:
+    monitoring:
+      prediction-consistency:
+        window-size: 1000
+        threshold: 0.05
+      decision-boundary:
+        sampling-points: 500
+        threshold: 0.1
+      performance-degradation:
+        baseline-window: 10000
+        current-window: 1000
+        threshold: 0.05
+      model-fingerprinting:
+        signature-length: 256
+        hash-algorithm: SHA-256
+    
+    theft-detection:
+      query-pattern:
+        rate-limit: 100
+        time-window: 3600 # 1 hour in seconds
+        suspicious-threshold: 0.8
+      response-correlation:
+        correlation-threshold: 0.9
+        pattern-length: 10
+    
+    scheduling:
+      integrity-check-interval: 300 # 5 minutes in seconds
+      performance-check-interval: 600 # 10 minutes in seconds
+      fingerprint-update-interval: 3600 # 1 hour in seconds
+
+logging:
+  level:
+    com.ciphergenix: DEBUG
+    org.springframework.kafka: INFO
