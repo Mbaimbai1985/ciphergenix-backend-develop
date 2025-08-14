@@ -1,0 +1,571 @@
+{
+  "info": {
+    "name": "CipherGenix User Service",
+    "description": "User management, authentication, and profile operations",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8086",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_uuid",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "verification_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "password_reset_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication & Registration",
+      "item": [
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@ciphergenix.com\",\n  \"username\": \"johndoe\",\n  \"password\": \"SecurePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/register",
+              "host": ["{{base_url}}"],
+              "path": ["user", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/verify/account?token={{verification_token}}",
+              "host": ["{{base_url}}"],
+              "path": ["user", "verify", "account"],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{verification_token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Multi-Factor Authentication (MFA)",
+      "item": [
+        {
+          "name": "Enable MFA",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/mfa/enable",
+              "host": ["{{base_url}}"],
+              "path": ["user", "mfa", "enable"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Disable MFA",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/mfa/disable",
+              "host": ["{{base_url}}"],
+              "path": ["user", "mfa", "disable"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Profile Management",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/profile",
+              "host": ["{{base_url}}"],
+              "path": ["user", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by UUID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/{{user_uuid}}",
+              "host": ["{{base_url}}"],
+              "path": ["user", "{{user_uuid}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by Email",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/user/john.doe@ciphergenix.com",
+              "host": ["{{base_url}}"],
+              "path": ["user", "user", "john.doe@ciphergenix.com"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@ciphergenix.com\",\n  \"phone\": \"+1-555-0123\",\n  \"bio\": \"Senior Security Engineer at CipherGenix\",\n  \"address\": \"123 Security Blvd, San Francisco, CA 94105\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/update",
+              "host": ["{{base_url}}"],
+              "path": ["user", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Profile Photo",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/profile/image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/user/photo",
+              "host": ["{{base_url}}"],
+              "path": ["user", "photo"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile Photo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/image/profile_image.jpg",
+              "host": ["{{base_url}}"],
+              "path": ["user", "image", "profile_image.jpg"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Password Management",
+      "item": [
+        {
+          "name": "Update Password (Logged In)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"OldPassword123!\",\n  \"newPassword\": \"NewPassword123!\",\n  \"confirmPassword\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/updatepassword",
+              "host": ["{{base_url}}"],
+              "path": ["user", "updatepassword"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Request Password Reset",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/resetpassword?email=john.doe@ciphergenix.com",
+              "host": ["{{base_url}}"],
+              "path": ["user", "resetpassword"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "john.doe@ciphergenix.com"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Password Reset Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/verify/password?token={{password_reset_token}}",
+              "host": ["{{base_url}}"],
+              "path": ["user", "verify", "password"],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{password_reset_token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userUuid\": \"{{user_uuid}}\",\n  \"token\": \"{{password_reset_token}}\",\n  \"password\": \"NewPassword123!\",\n  \"confirmPassword\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/resetpassword/reset",
+              "host": ["{{base_url}}"],
+              "path": ["user", "resetpassword", "reset"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Role & Permission Management",
+      "item": [
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/updaterole",
+              "host": ["{{base_url}}"],
+              "path": ["user", "updaterole"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Credentials",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/credential/{{user_uuid}}",
+              "host": ["{{base_url}}"],
+              "path": ["user", "credential", "{{user_uuid}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Account Management",
+      "item": [
+        {
+          "name": "Toggle Account Expired",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/toggleaccountexpired",
+              "host": ["{{base_url}}"],
+              "path": ["user", "toggleaccountexpired"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Account Locked",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/toggleaccountlocked",
+              "host": ["{{base_url}}"],
+              "path": ["user", "toggleaccountlocked"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Account Enabled",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/toggleaccountenabled",
+              "host": ["{{base_url}}"],
+              "path": ["user", "toggleaccountenabled"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Administration",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/list",
+              "host": ["{{base_url}}"],
+              "path": ["user", "list"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Assignee by Ticket UUID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/assignee/ticket-uuid-123",
+              "host": ["{{base_url}}"],
+              "path": ["user", "assignee", "ticket-uuid-123"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Demo & Testing Workflows",
+      "item": [
+        {
+          "name": "Complete User Registration Flow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Security\",\n  \"email\": \"alice.security@ciphergenix.com\",\n  \"username\": \"alicesec\",\n  \"password\": \"AliceSecure123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/register",
+              "host": ["{{base_url}}"],
+              "path": ["user", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Security Analyst User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Bob\",\n  \"lastName\": \"Analyst\",\n  \"email\": \"bob.analyst@ciphergenix.com\",\n  \"username\": \"bobanalyst\",\n  \"password\": \"BobAnalyst123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/register",
+              "host": ["{{base_url}}"],
+              "path": ["user", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Admin User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Charlie\",\n  \"lastName\": \"Admin\",\n  \"email\": \"charlie.admin@ciphergenix.com\",\n  \"username\": \"charlieadmin\",\n  \"password\": \"CharlieAdmin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/register",
+              "host": ["{{base_url}}"],
+              "path": ["user", "register"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}

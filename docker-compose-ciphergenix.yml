@@ -148,11 +148,37 @@ services:
     volumes:
       - ./logs/security-engine:/app/logs
 
+  # CipherGenix Payment Service
+  payment-service:
+    build: ./ciphergenix-payment-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - discovery-service
+      - ciphergenix-postgres
+      - kafka
+      - redis
+    networks:
+      - ciphergenix-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka
+      - DB_USERNAME=ciphergenix_user
+      - DB_PASSWORD=ciphergenix_pass
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ciphergenix-postgres:5432/ciphergenix_payment_db
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_your_stripe_secret_key}
+      - STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY:-pk_test_your_stripe_public_key}
+    volumes:
+      - ./logs/payment:/app/logs
+
   # CipherGenix ML Model Service
   ml-model-service:
     build: ./ciphergenix-ml-model-service
     ports:
-      - "8084:8084"
+      - "8085:8085"
     depends_on:
       - discovery-service
       - ciphergenix-postgres
@@ -173,6 +199,30 @@ services:
       - ./logs/ml-model:/app/logs
       - ./ml-models:/app/models
 
+  # User Service
+  user-service:
+    build: ./userservice
+    ports:
+      - "8086:8085"
+    depends_on:
+      - discovery-service
+      - ciphergenix-postgres
+      - kafka
+    networks:
+      - ciphergenix-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_SERVER_URL=http://discovery-service:8761/eureka
+      - POSTGRES_USERNAME=ciphergenix_user
+      - POSTGRES_PASSWORD=ciphergenix_pass
+      - POSTGRES_HOST=ciphergenix-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DATABASE=ciphergenix_auth_db
+      - KAFKA_SERVER_URL=kafka:9092
+      - SERVER_PORT=8085
+    volumes:
+      - ./logs/user-service:/app/logs
+
   # CipherGenix Frontend Application
   ciphergenix-frontend:
     build:
@@ -186,14 +236,18 @@ services:
       - REACT_APP_VULNERABILITY_SERVICE_URL=http://localhost:8081
       - REACT_APP_MODEL_INTEGRITY_SERVICE_URL=http://localhost:8082
       - REACT_APP_SECURITY_ENGINE_SERVICE_URL=http://localhost:8083
-      - REACT_APP_ML_MODEL_SERVICE_URL=http://localhost:8084
+      - REACT_APP_PAYMENT_SERVICE_URL=http://localhost:8084
+      - REACT_APP_ML_MODEL_SERVICE_URL=http://localhost:8085
+      - REACT_APP_USER_SERVICE_URL=http://localhost:8086
       - REACT_APP_ENVIRONMENT=docker
     depends_on:
       - gateway
       - vulnerability-detection-service
       - model-integrity-service
       - security-engine-service
+      - payment-service
       - ml-model-service
+      - user-service
     networks:
       - ciphergenix-network
     healthcheck:

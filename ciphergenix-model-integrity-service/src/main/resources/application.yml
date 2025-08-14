@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ciphergenix-model-integrity-service
+    name: CIPHERGENIX-MODEL-INTEGRITY-SERVICE
   
   datasource:
     url: jdbc:postgresql://localhost:5432/ciphergenix_model_integrity_db

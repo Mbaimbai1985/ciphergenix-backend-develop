@@ -8,7 +8,7 @@ server:
 
 spring:
   application:
-    name: ciphergenix-payment-service
+    name: CIPHERGENIX-PAYMENT-SERVICE
   
   profiles:
     active: dev

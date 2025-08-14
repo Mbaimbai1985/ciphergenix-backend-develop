@@ -1,0 +1,230 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: CIPHERGENIX-SECURITY-ENGINE-SERVICE
+  
+  profiles:
+    active: dev
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ciphergenix_security_engine_db
+    username: ciphergenix_user
+    password: ciphergenix_secure_password_2024
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: false
+      pool-name: CipherGenixSecurityEngineCP
+      connection-test-query: SELECT 1
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 25
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        generate_statistics: false
+    open-in-view: false
+  
+  # Redis Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 3
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+  
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      properties:
+        security.protocol: PLAINTEXT
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: ciphergenix-security-engine-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        security.protocol: PLAINTEXT
+  
+  # Cache Configuration
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000 # 10 minutes
+      cache-null-values: false
+
+# Eureka Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: ${HOSTNAME:localhost}
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Security Configuration
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/ciphergenix}
+        jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8080/auth/realms/ciphergenix/protocol/openid_connect/certs}
+
+# CipherGenix Security Engine Configuration
+ciphergenix:
+  security-engine:
+    # Cryptographic Settings
+    crypto:
+      default-algorithm: AES
+      default-key-size: 256
+      default-transformation: AES/CBC/PKCS5Padding
+      secure-random-algorithm: SHA1PRNG
+      
+    # Key Management
+    key-management:
+      rotation-interval-days: 90
+      max-key-age-days: 365
+      key-storage-type: database # Options: database, vault, hsm
+      backup-enabled: true
+      
+    # File Operations
+    file-operations:
+      max-file-size-mb: 100
+      allowed-extensions: 
+        - pdf
+        - doc
+        - docx
+        - txt
+        - jpg
+        - png
+        - zip
+      secure-storage-path: /app/secure-files
+      temp-storage-path: /app/temp-files
+      encryption-enabled: true
+      integrity-check-enabled: true
+      
+    # Digital Signatures
+    digital-signatures:
+      default-algorithm: RSA
+      key-size: 2048
+      signature-algorithm: SHA256withRSA
+      certificate-validity-days: 365
+      
+    # Access Control
+    access-control:
+      session-timeout-minutes: 30
+      max-failed-attempts: 5
+      lockout-duration-minutes: 15
+      require-mfa: false
+      
+    # Audit and Logging
+    audit:
+      enabled: true
+      log-level: INFO
+      retention-days: 90
+      include-sensitive-data: false
+      real-time-alerts: true
+      
+    # Performance and Monitoring
+    performance:
+      encryption-chunk-size: 8192
+      decryption-chunk-size: 8192
+      thread-pool-size: 10
+      cache-enabled: true
+      cache-ttl-minutes: 10
+      
+    # Security Policies
+    policies:
+      enforce-encryption: true
+      require-digital-signatures: false
+      password-complexity:
+        min-length: 12
+        require-uppercase: true
+        require-lowercase: true
+        require-numbers: true
+        require-special-chars: true
+      
+# Logging Configuration
+logging:
+  level:
+    com.ciphergenix.securityengine: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.kafka: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/ciphergenix-security-engine.log
+    max-size: 10MB
+    max-history: 30
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  info:
+    title: CipherGenix Security Engine API
+    description: Comprehensive security operations including cryptography, key management, and file security
+    version: 1.0.0
+    contact:
+      name: CipherGenix Security Team
+      email: security@ciphergenix.com

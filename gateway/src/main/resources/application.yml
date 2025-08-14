@@ -7,6 +7,7 @@ spring:
     gateway:
       mvc:
         routes:
+          # Original Services
           - id: authorization-server
             uri: lb://AUTHORIZATIONSERVER
             predicates:
@@ -23,6 +24,28 @@ spring:
             uri: lb://NOTIFICATIONSERVICE
             predicates:
               - Path=/notification/**
+          
+          # CipherGenix AI Security Platform Services
+          - id: vulnerability-detection-service
+            uri: lb://CIPHERGENIX-VULNERABILITY-DETECTION-SERVICE
+            predicates:
+              - Path=/api/v1/vulnerability-detection/**
+          - id: model-integrity-service
+            uri: lb://CIPHERGENIX-MODEL-INTEGRITY-SERVICE
+            predicates:
+              - Path=/api/v1/model-integrity/**
+          - id: security-engine-service
+            uri: lb://CIPHERGENIX-SECURITY-ENGINE-SERVICE
+            predicates:
+              - Path=/api/v1/security-engine/**
+          - id: payment-service
+            uri: lb://CIPHERGENIX-PAYMENT-SERVICE
+            predicates:
+              - Path=/api/v1/payments/**
+          - id: ml-model-service
+            uri: lb://CIPHERGENIX-ML-MODEL-SERVICE
+            predicates:
+              - Path=/api/v1/ml-models/**
             #filters:
               #- name:
                 #args:
