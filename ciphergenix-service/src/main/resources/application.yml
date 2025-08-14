@@ -1,0 +1,95 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: ciphergenix-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ciphergenix
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  
+  redis:
+    host: localhost
+    port: 6379
+  
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ciphergenix-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+ciphergenix:
+  security:
+    jwt:
+      secret: ciphergenix-secret-key-2024
+      expiration: 86400000 # 24 hours
+  
+  ml:
+    models:
+      data-poisoning:
+        contamination: 0.1
+        isolation-forest:
+          n-estimators: 100
+          max-samples: 256
+        autoencoder:
+          encoding-dim: 64
+          hidden-layers: [128, 64]
+      
+      adversarial:
+        mahalanobis:
+          confidence-threshold: 0.95
+        reconstruction:
+          threshold: 0.1
+      
+      ensemble:
+        weights:
+          statistical: 0.3
+          ml-based: 0.4
+          reconstruction: 0.3
+  
+  monitoring:
+    alert:
+      severity-levels: [LOW, MEDIUM, HIGH, CRITICAL]
+      response:
+        automated: true
+        escalation-delay: 300 # 5 minutes
+    
+    streaming:
+      kafka:
+        topics:
+          threat-detection: ciphergenix.threats
+          model-monitoring: ciphergenix.models
+          alerts: ciphergenix.alerts
