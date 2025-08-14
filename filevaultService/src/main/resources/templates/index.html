@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>FileVault</title>
+</head>
+<body>
+<h1>Welcome to FileVault</h1>
+<form method="post" enctype="multipart/form-data" th:action="@{/upload}">
+    <input type="file" name="file" required />
+    <button type="submit">Upload and Encrypt</button>
+</form>
+<p th:if="${message}" th:text="${message}" style="color: green;"></p>
+<p th:if="${fileName}">
+    <a th:href="@{/download/{fileName}(fileName=${fileName})}">Download Decrypted File</a>
+</p>
+</body>
+</html>

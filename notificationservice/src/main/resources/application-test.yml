@@ -1,0 +1,24 @@
+ACTIVE_PROFILE: test
+
+POSTGRES_USERNAME: user
+POSTGRES_PASSWORD: letmein
+POSTGRES_HOST: 192.168.1.209
+POSTGRES_PORT: 5432
+POSTGRES_DATABASE: ciphergenix
+
+USER_NAME: admin
+PASSWORD: letmein
+
+SERVER_PORT: 8088
+
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: <your email address>
+EMAIL_PASSWORD: <your passwrod>
+VERIFY_EMAIL_HOST: http://localhost:3000
+
+UI_APP_URL: http://localhost:3000
+
+JWKS_URI: http://localhost:8080/oauth2/jwks
+
+KAFKA_SERVER_URL: http://192.168.1.209:9092

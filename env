@@ -1,0 +1,5 @@
+POSTGRES_USER=user
+POSTGRES_PASSWORD=letmein
+POSTGRES_DATABASE=cyphergenix
+PGADMIN_EMAIL=davymbaimbai@gmail.com
+PGADMIN_PASSWORD=letmein

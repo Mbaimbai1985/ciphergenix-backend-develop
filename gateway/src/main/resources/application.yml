@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      mvc:
+        routes:
+          - id: authorization-server
+            uri: lb://AUTHORIZATIONSERVER
+            predicates:
+              - Path=/authorization/**
+          - id: user-service
+            uri: lb://USERSERVICE
+            predicates:
+              - Path=/user/**
+          - id: ticket-service
+            uri: lb://TICKETSERVICE
+            predicates:
+              - Path=/ticket/**
+          - id: notification-service
+            uri: lb://NOTIFICATIONSERVICE
+            predicates:
+              - Path=/notification/**
+            #filters:
+              #- name:
+                #args:
+                 #rate-limiter: "#{customRateLimiter}"
+                 #key-resolver: "#{customResolver}"
+
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${USER_NAME}:${USER_PASSWORD}@localhost:5002/eureka/
+server:
+  port: ${SERVER_PORT}
+jwks:
+  uri: ${JWKS_URI}

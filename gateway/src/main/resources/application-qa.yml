@@ -1,0 +1,6 @@
+ACTIVE_PROFILE: qa
+SERVER_PORT: 8000
+ROLES: EUREKA_CLIENT
+JWKS_URI: http://localhost:8080/oauth2/jwks
+USER_NAME: admin
+USER_PASSWORD: letmein
