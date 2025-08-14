@@ -173,6 +173,36 @@ services:
       - ./logs/ml-model:/app/logs
       - ./ml-models:/app/models
 
+  # CipherGenix Frontend Application
+  ciphergenix-frontend:
+    build:
+      context: ./ciphergenix-frontend
+      dockerfile: Dockerfile
+    container_name: ciphergenix-frontend
+    ports:
+      - "3001:3000"  # Map to port 3001 to avoid conflict with Grafana
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:8080
+      - REACT_APP_VULNERABILITY_SERVICE_URL=http://localhost:8081
+      - REACT_APP_MODEL_INTEGRITY_SERVICE_URL=http://localhost:8082
+      - REACT_APP_SECURITY_ENGINE_SERVICE_URL=http://localhost:8083
+      - REACT_APP_ML_MODEL_SERVICE_URL=http://localhost:8084
+      - REACT_APP_ENVIRONMENT=docker
+    depends_on:
+      - gateway
+      - vulnerability-detection-service
+      - model-integrity-service
+      - security-engine-service
+      - ml-model-service
+    networks:
+      - ciphergenix-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   # Monitoring - Prometheus
   prometheus:
     image: prom/prometheus:latest
