@@ -3,87 +3,174 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Cat Support | Please sign in</title>
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9732/9732800.png">
+    <meta name="description" content="CipherGenix - AI-Powered Security Platform">
+    <meta name="author" content="CipherGenix Security Team">
+    <title>CipherGenix | Secure Sign In</title>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/cyber-security.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .ciphergenix-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .security-pattern {
+            background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+        .cyber-glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+    </style>
 </head>
-<body>
-<nav class="bg-gray-900 fixed w-full top-0 left-0 z-40">
-    <div class="container h-16 mx-auto">
-        <div class="relative h-16 flex items-center justify-between">
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <a href="http://localhost:3000" class="flex-shrink-0 items-center cursor-pointer">
-                    <img class="h-8 w-auto" src="https://cdn-icons-png.flaticon.com/512/9732/9732800.png" alt="Ticket App">
-                </a>
-            </div>
-            <div class="flex items-center">
-                <a href="http://localhost:8080/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=http://localhost:3000&code_challenge_method=S256&code_challenge=SmYSO0DZLTwFYFhcnmeQPtON_dG5FjCnHXekjZMIu8E" class="bg-gray-700 p-1 text-white hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-3">
-                    Login
-                    <svg xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" stroke-linecap="round" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="shrink-0 size-4"><path d="m15 4.5 7.5 7.5-7.5 7.5" /></svg>
-                </a>
-                <a href="http://localhost:3000/register" class="hover:bg-gray-700 relative p-1 text-white hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-3">
-                    Register
-                    <svg xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke="currentColor" class="shrink-0 size-4"><path d="m15 4.5 7.5 7.5-7.5 7.5" /></svg>
-                </a>
-                <a href="http://localhost:3000/resetpassword" class="hover:bg-gray-700 relative p-1 text-white hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-3">
-                    Reset Password
-                    <svg xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke="currentColor" class="shrink-0 size-4"><path d="m15 4.5 7.5 7.5-7.5 7.5" /></svg>
-                </a>
-            </div>
-        </div>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900">
+    <!-- Security Background Pattern -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 security-pattern opacity-20"></div>
     </div>
-</nav>
-<div class="mt-12">
-    <div class="container mx-auto pt-10">
-        <div class="mt-4 flex flex-col items-center">
-            <img class="size-20 rounded-md bg-gray-400 p-3" src="https://cdn-icons-png.flaticon.com/512/9732/9732800.png" alt="Your Company" width="80" height="80">
-            <h2 class="mt-5 text-xl font-semibold text-gray-800">Sign into your account</h2>
+
+    <!-- Navigation -->
+    <nav class="ciphergenix-gradient fixed w-full top-0 left-0 z-40 shadow-lg">
+        <div class="container h-16 mx-auto px-4">
+            <div class="relative h-16 flex items-center justify-between">
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <a href="http://localhost:3000" class="flex items-center space-x-3 cursor-pointer">
+                        <img class="h-10 w-10 rounded-lg cyber-glow" src="https://img.icons8.com/fluency/96/cyber-security.png" alt="CipherGenix">
+                        <div class="text-white">
+                            <span class="text-xl font-bold">CipherGenix</span>
+                            <div class="text-xs opacity-90">AI Security Platform</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a href="http://localhost:8080/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=http://localhost:3000&code_challenge_method=S256&code_challenge=SmYSO0DZLTwFYFhcnmeQPtON_dG5FjCnHXekjZMIu8E" 
+                       class="bg-white bg-opacity-20 backdrop-blur-md p-1 text-white hover:bg-opacity-30 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Login
+                    </a>
+                    <a href="http://localhost:3000/register" 
+                       class="hover:bg-white hover:bg-opacity-10 backdrop-blur-md p-1 text-white font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        Register
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="mt-4 flex flex-col items-center">
-            <div class="min-w-[30rem] p-4 rounded-lg p-3 border border-gray-200 bg-white">
-                <div th:if="${session.SPRING_SECURITY_LAST_EXCEPTION != null}" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50" id="alert" role="alert">
-                    <svg class="flex-shrink-0 w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Header -->
+            <div class="text-center">
+                <div class="mx-auto h-20 w-20 rounded-2xl ciphergenix-gradient p-4 cyber-glow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
-                    <div class="w-96 text-sm font-medium" data-th-text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">An error occurred. Please try again.</div>
-                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert" aria-label="Close">
-                        <span class="sr-only">Close</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </div>
+                <h2 class="mt-6 text-3xl font-extrabold text-white">
+                    Secure Access Portal
+                </h2>
+                <p class="mt-2 text-sm text-gray-300">
+                    Sign in to your CipherGenix security dashboard
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <div class="bg-white bg-opacity-10 backdrop-blur-md rounded-xl shadow-2xl border border-white border-opacity-20 p-8">
+                <!-- Error Alert -->
+                <div th:if="${session.SPRING_SECURITY_LAST_EXCEPTION != null}" 
+                     class="flex items-center p-4 mb-6 text-red-100 rounded-lg bg-red-500 bg-opacity-20 border border-red-400 border-opacity-30" 
+                     id="alert" role="alert">
+                    <svg class="flex-shrink-0 w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="text-sm font-medium flex-1" data-th-text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">
+                        Authentication failed. Please verify your credentials.
+                    </div>
+                    <button type="button" class="ml-auto text-red-300 hover:text-red-100 transition-colors" 
+                            data-dismiss-target="#alert" aria-label="Close">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
                         </svg>
                     </button>
                 </div>
-                <form method="post" th:action="@{/login}">
-                    <div class="space-y-6">
-                        <div>
-                            <label for="username" class="block mb-2 text-sm font-medium text-gray-800">Email Address</label>
-                            <input type="email" name="username" id="username" class="border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@email.com" required />
-                        </div>
-                        <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-800">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••" class="border border-gray-200 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
-                        </div>
-                        <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign into your account</button>
-                    </div>
-                </form>
-                <div class="mt-4">
-                    <a href="http://localhost:3000/resetpassword" class="block mt-4 text-base text-blue-600 hover:underline">Forgot Password?</a>
-                    <div class="mt-3 flex items-center justify-between">
-                        <a href="http://localhost:3000/register" class="bg-blue-600 hover:bg-blue-700 p-2 rounded-md text-white block text-sm text-blue-600">Create account</a>
-                        <a href="http://localhost:3000" class="inline-flex justify-center items-center bg-blue-600 hover:bg-blue-700 p-2 rounded-md text-white block text-sm text-blue-600">
-                            Back to home
-                            <svg xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke="currentColor" class="shrink-0 size-4">
-                                <path d="m15 4.5 7.5 7.5-7.5 7.5" />
+
+                <form method="post" th:action="@{/login}" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-white mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                             </svg>
+                            Email Address
+                        </label>
+                        <input type="email" name="username" id="username" 
+                               class="w-full px-4 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-md transition-all" 
+                               placeholder="security@ciphergenix.com" required />
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-white mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                            Password
+                        </label>
+                        <input type="password" name="password" id="password" 
+                               class="w-full px-4 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-md transition-all" 
+                               placeholder="••••••••••••" required />
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full ciphergenix-gradient text-white font-bold py-3 px-4 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 cyber-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Access Security Dashboard
+                    </button>
+                </form>
+
+                <!-- Additional Links -->
+                <div class="mt-6 space-y-4">
+                    <a href="http://localhost:3000/resetpassword" 
+                       class="block text-center text-blue-300 hover:text-blue-200 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                        Forgot your password?
+                    </a>
+                    
+                    <div class="flex space-x-4">
+                        <a href="http://localhost:3000/register" 
+                           class="flex-1 bg-white bg-opacity-10 hover:bg-opacity-20 text-white text-center py-2 px-4 rounded-lg transition-all backdrop-blur-md border border-white border-opacity-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                            Create Account
+                        </a>
+                        <a href="http://localhost:3000" 
+                           class="flex-1 bg-white bg-opacity-10 hover:bg-opacity-20 text-white text-center py-2 px-4 rounded-lg transition-all backdrop-blur-md border border-white border-opacity-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Back to Home
                         </a>
                     </div>
                 </div>
             </div>
+
+            <!-- Security Notice -->
+            <div class="text-center">
+                <p class="text-xs text-gray-400">
+                    🛡️ Protected by CipherGenix Advanced Security • 
+                    <span class="text-green-400">SSL/TLS Encrypted</span>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 </html>
