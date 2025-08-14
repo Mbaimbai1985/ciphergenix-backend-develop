@@ -1,0 +1,325 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: ciphergenix-payment-service
+  
+  profiles:
+    active: dev
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ciphergenix_payments
+    username: ${DB_USERNAME:ciphergenix_user}
+    password: ${DB_PASSWORD:ciphergenix_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: false
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 25
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        generate_statistics: false
+    open-in-view: false
+  
+  # Redis Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 2
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+  
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      compression-type: gzip
+    consumer:
+      group-id: ciphergenix-payment-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        spring.json.trusted.packages: com.ciphergenix.*
+    listener:
+      ack-mode: manual
+      concurrency: 3
+  
+  # Security Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/auth/realms/ciphergenix}
+          jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8080/auth/realms/ciphergenix/protocol/openid-connect/certs}
+
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 30
+  instance:
+    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    metadata-map:
+      version: 1.0.0
+      environment: ${spring.profiles.active}
+
+# Stripe Configuration
+stripe:
+  api:
+    public-key: ${STRIPE_PUBLIC_KEY:pk_test_your_stripe_public_key}
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_your_stripe_secret_key}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_your_webhook_secret}
+  
+  # Payment Configuration
+  payment:
+    currency: usd
+    success-url: ${STRIPE_SUCCESS_URL:http://localhost:3001/payment/success}
+    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:3001/payment/cancel}
+    
+  # Subscription Configuration
+  subscription:
+    trial-period-days: 14
+    default-price-id: ${STRIPE_DEFAULT_PRICE_ID:price_default_subscription}
+    
+  # Webhook Configuration
+  webhook:
+    endpoint-secret: ${STRIPE_WEBHOOK_SECRET:whsec_your_webhook_secret}
+    events:
+      - payment_intent.succeeded
+      - payment_intent.payment_failed
+      - invoice.payment_succeeded
+      - invoice.payment_failed
+      - customer.subscription.created
+      - customer.subscription.updated
+      - customer.subscription.deleted
+      - customer.created
+      - customer.updated
+      - payment_method.attached
+
+# CipherGenix Payment Configuration
+ciphergenix:
+  payment:
+    # Security Configuration
+    security:
+      encryption:
+        algorithm: AES
+        key-length: 256
+        transformation: AES/GCB/NoPadding
+      
+    # Payment Processing
+    processing:
+      retry-attempts: 3
+      retry-delay-ms: 1000
+      timeout-ms: 30000
+      max-amount: 100000.00  # $1000.00 in cents
+      min-amount: 50         # $0.50 in cents
+      
+    # Invoice Configuration
+    invoice:
+      auto-advance: true
+      collection-method: charge_automatically
+      days-until-due: 30
+      
+    # Notification Configuration
+    notifications:
+      payment-success-topic: ciphergenix-payment-success
+      payment-failed-topic: ciphergenix-payment-failed
+      subscription-events-topic: ciphergenix-subscription-events
+      invoice-events-topic: ciphergenix-invoice-events
+      
+    # Rate Limiting
+    rate-limit:
+      requests-per-minute: 100
+      burst-capacity: 200
+      
+    # Feature Flags
+    features:
+      payment-intents-enabled: true
+      subscriptions-enabled: true
+      invoicing-enabled: true
+      webhooks-enabled: true
+      refunds-enabled: true
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      slo:
+        http.server.requests: 50ms,100ms,200ms,500ms
+  info:
+    env:
+      enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.ciphergenix: INFO
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: WARN
+    com.stripe: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/ciphergenix-payment-service.log
+
+# OpenAPI Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  info:
+    title: CipherGenix Payment Service API
+    description: Payment processing and billing management for CipherGenix AI Security Platform
+    version: 1.0.0
+    contact:
+      name: CipherGenix Development Team
+      email: dev@ciphergenix.com
+    license:
+      name: Proprietary
+      url: https://ciphergenix.com/license
+
+---
+# Development Profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  
+  datasource:
+    url: jdbc:h2:mem:ciphergenix_payments_dev
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+stripe:
+  api:
+    public-key: pk_test_51234567890abcdef
+    secret-key: sk_test_51234567890abcdef
+    webhook-secret: whsec_test_webhook_secret
+
+logging:
+  level:
+    com.ciphergenix: DEBUG
+    org.springframework.security: DEBUG
+    com.stripe: DEBUG
+
+---
+# Test Profile
+spring:
+  config:
+    activate:
+      on-profile: test
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+stripe:
+  api:
+    public-key: pk_test_mock_key
+    secret-key: sk_test_mock_key
+    webhook-secret: whsec_mock_secret
+
+---
+# Production Profile
+spring:
+  config:
+    activate:
+      on-profile: prod
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    com.ciphergenix: INFO
+    org.springframework.security: WARN
+    com.stripe: WARN
