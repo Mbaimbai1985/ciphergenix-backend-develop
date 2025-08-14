@@ -191,32 +191,174 @@ export class VulnerabilityDetectionAPI {
   }
 }
 
+// Model Integrity Service Types
+interface ModelFingerprint {
+  id: number;
+  modelId: string;
+  modelName: string;
+  modelVersion: string;
+  fingerprintHash: string;
+  integrityScore: number;
+  createdAt: string;
+  lastVerified: string;
+  isActive: boolean;
+  parameters?: Record<string, number>;
+  weightsHash?: Record<string, string>;
+  architectureHash?: string;
+}
+
+interface CreateFingerprintRequest {
+  modelId: string;
+  modelName: string;
+  modelVersion: string;
+  parameters: Record<string, number>;
+  weightsHash: Record<string, string>;
+}
+
+interface VerifyIntegrityRequest {
+  currentParameters: Record<string, number>;
+  currentWeightsHash: Record<string, string>;
+}
+
+interface IntegrityVerificationResult {
+  modelId: string;
+  integrityScore: number;
+  status: 'HEALTHY' | 'WARNING' | 'CRITICAL';
+  verifiedAt: string;
+  message: string;
+}
+
+interface MonitoringResponse {
+  status: string;
+  modelId: string;
+  message: string;
+  startedAt?: string;
+  stoppedAt?: string;
+}
+
+interface PerformanceTrends {
+  modelId: string;
+  periodDays: number;
+  measurementCount: number;
+  accuracyTrend: number[];
+  latencyTrend: number[];
+  currentAccuracy?: number;
+  averageAccuracy: number;
+  accuracyChange: number;
+  latencyChange: number;
+}
+
+interface TheftAnalysisRequest {
+  queries: Array<Record<string, any>>;
+  timeWindow?: string;
+  analysisType?: string;
+}
+
+interface TheftAnalysisResult {
+  modelId: string;
+  queryCount: number;
+  queryFrequency: number;
+  queryDiversity: number;
+  responseCorrelation: number;
+  theftProbability: number;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  analyzedAt: string;
+}
+
+interface IntegrityDashboard {
+  totalModels: number;
+  monitoredModels: number;
+  healthyModels: number;
+  modelsWithWarnings: number;
+  criticalModels: number;
+  averageIntegrityScore: number;
+  activeAlerts: number;
+  dashboardUpdatedAt: string;
+  recentAlerts: Array<{
+    modelId: string;
+    type: string;
+    severity: string;
+    timestamp: string;
+  }>;
+}
+
+interface HealthCheckResponse {
+  status: string;
+  service: string;
+  timestamp: string;
+  version: string;
+}
+
+interface ServiceInfo {
+  serviceName: string;
+  version: string;
+  description: string;
+  features: string[];
+  timestamp: string;
+}
+
 // Model Integrity Service API
 export class ModelIntegrityAPI {
-  // Start Model Monitoring
-  static async startModelMonitoring(modelId: string): Promise<{ status: string; message: string }> {
-    const response = await modelIntegrityApi.post(`/api/v1/model-integrity/monitor/${modelId}`);
+  // Create Model Fingerprint
+  static async createFingerprint(request: CreateFingerprintRequest): Promise<ModelFingerprint> {
+    const response = await modelIntegrityApi.post('/api/v1/model-integrity/fingerprint', request);
     return response.data;
   }
 
   // Get Model Fingerprint
-  static async getModelFingerprint(modelId: string): Promise<any> {
+  static async getFingerprint(modelId: string): Promise<ModelFingerprint> {
     const response = await modelIntegrityApi.get(`/api/v1/model-integrity/fingerprint/${modelId}`);
     return response.data;
   }
 
+  // Verify Model Integrity
+  static async verifyIntegrity(modelId: string, request: VerifyIntegrityRequest): Promise<IntegrityVerificationResult> {
+    const response = await modelIntegrityApi.post(`/api/v1/model-integrity/verify/${modelId}`, request);
+    return response.data;
+  }
+
+  // Start Model Monitoring
+  static async startMonitoring(modelId: string): Promise<MonitoringResponse> {
+    const response = await modelIntegrityApi.post(`/api/v1/model-integrity/monitor/${modelId}`, {});
+    return response.data;
+  }
+
+  // Stop Model Monitoring
+  static async stopMonitoring(modelId: string): Promise<MonitoringResponse> {
+    const response = await modelIntegrityApi.delete(`/api/v1/model-integrity/monitor/${modelId}`);
+    return response.data;
+  }
+
   // Get Performance Metrics
-  static async getPerformanceMetrics(modelId: string): Promise<any> {
-    const response = await modelIntegrityApi.get(`/api/v1/model-integrity/performance/${modelId}`);
+  static async getPerformanceMetrics(modelId: string, days: number = 7): Promise<PerformanceTrends> {
+    const response = await modelIntegrityApi.get(`/api/v1/model-integrity/performance/${modelId}?days=${days}`);
     return response.data;
   }
 
   // Analyze Theft Patterns
-  static async analyzeTheftPatterns(modelId: string, queryPatterns: any): Promise<any> {
+  static async analyzeTheftPatterns(modelId: string, queryPatterns: TheftAnalysisRequest): Promise<TheftAnalysisResult> {
     const response = await modelIntegrityApi.post(
       `/api/v1/model-integrity/theft-detection/${modelId}`,
       queryPatterns
     );
+    return response.data;
+  }
+
+  // Get Integrity Dashboard
+  static async getDashboard(): Promise<IntegrityDashboard> {
+    const response = await modelIntegrityApi.get('/api/v1/model-integrity/dashboard');
+    return response.data;
+  }
+
+  // Health Check
+  static async getHealth(): Promise<HealthCheckResponse> {
+    const response = await modelIntegrityApi.get('/api/v1/model-integrity/health');
+    return response.data;
+  }
+
+  // Service Info
+  static async getServiceInfo(): Promise<ServiceInfo> {
+    const response = await modelIntegrityApi.get('/api/v1/model-integrity/info');
     return response.data;
   }
 }

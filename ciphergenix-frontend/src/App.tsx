@@ -4,16 +4,9 @@ import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
 import ThreatDetection from './components/ThreatDetection';
+import ModelIntegrity from './components/ModelIntegrity';
 
 // Placeholder components for other routes
-const AIModels = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">AI Models</h1>
-    <div className="card">
-      <p className="text-gray-600">AI Models management interface coming soon...</p>
-    </div>
-  </div>
-);
 
 const Analytics = () => (
   <div className="p-6">
@@ -79,10 +72,10 @@ function App() {
             <Route path="/threat-detection/realtime" element={<RealtimeMonitoring />} />
             
             {/* AI Models Routes */}
-            <Route path="/ai-models" element={<AIModels />} />
-            <Route path="/ai-models/registry" element={<AIModels />} />
-            <Route path="/ai-models/performance" element={<AIModels />} />
-            <Route path="/ai-models/training" element={<AIModels />} />
+            <Route path="/ai-models" element={<ModelIntegrity />} />
+                          <Route path="/ai-models/registry" element={<ModelIntegrity />} />
+              <Route path="/ai-models/performance" element={<ModelIntegrity />} />
+              <Route path="/ai-models/training" element={<ModelIntegrity />} />
             
             {/* Analytics Routes */}
             <Route path="/analytics" element={<Analytics />} />
