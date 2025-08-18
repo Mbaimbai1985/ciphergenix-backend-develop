@@ -48,10 +48,10 @@ const AdversarialDetection = () => (
 
 // Real-time Monitoring Page
 const RealtimeMonitoring = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">Real-time Monitoring</h1>
+  <div style={{ padding: '1.5rem' }}>
+    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '1rem' }}>Real-time Monitoring</h1>
     <div className="card">
-      <p className="text-gray-600">Real-time threat monitoring dashboard...</p>
+      <p style={{ color: '#6b7280' }}>Real-time threat monitoring dashboard...</p>
     </div>
   </div>
 );
