@@ -1,115 +1,259 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-/* Basic styles for now */
-body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb;
-  color: #111827;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-lg;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors;
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
 }
 
-code {
-  font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer components {
+  /* Modern Card Component */
+  .card {
+    @apply bg-white rounded-xl shadow-soft border border-gray-200 p-6 transition-all duration-200 hover:shadow-lg;
+  }
+  
+  .card-hover {
+    @apply hover:scale-[1.02] hover:shadow-xl;
+  }
+  
+  /* Glass Morphism Card */
+  .card-glass {
+    @apply bg-white/80 backdrop-blur-md rounded-xl shadow-soft border border-gray-200/50 p-6;
+  }
+  
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+  
+  /* Modern Buttons */
+  .btn {
+    @apply px-4 py-2.5 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300;
+  }
+  
+  .btn-danger {
+    @apply btn bg-danger-600 text-white hover:bg-danger-700 active:bg-danger-800 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-success {
+    @apply btn bg-success-600 text-white hover:bg-success-700 active:bg-success-800 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-ghost {
+    @apply btn bg-transparent hover:bg-gray-100 text-gray-700;
+  }
+  
+  .btn-gradient {
+    @apply btn bg-gradient-primary text-white hover:shadow-glow-sm transform hover:scale-105;
+  }
+  
+  /* Modern Input Fields */
+  .input {
+    @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+  
+  .input-error {
+    @apply border-danger-500 focus:ring-danger-500;
+  }
+  
+  .input-success {
+    @apply border-success-500 focus:ring-success-500;
+  }
+  
+  /* Labels */
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1.5;
+  }
+  
+  /* Modern Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+  
+  .badge-success {
+    @apply badge bg-success-100 text-success-800;
+  }
+  
+  .badge-warning {
+    @apply badge bg-warning-100 text-warning-800;
+  }
+  
+  .badge-danger {
+    @apply badge bg-danger-100 text-danger-800;
+  }
+  
+  .badge-gray {
+    @apply badge bg-gray-100 text-gray-800;
+  }
+  
+  /* Status Indicators */
+  .status-dot {
+    @apply w-2 h-2 rounded-full animate-pulse;
+  }
+  
+  .status-dot-success {
+    @apply status-dot bg-success-500;
+  }
+  
+  .status-dot-warning {
+    @apply status-dot bg-warning-500;
+  }
+  
+  .status-dot-danger {
+    @apply status-dot bg-danger-500;
+  }
+  
+  /* Navigation Items */
+  .nav-item {
+    @apply flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200;
+  }
+  
+  .nav-item-active {
+    @apply nav-item bg-primary-50 text-primary-700 hover:bg-primary-100;
+  }
+  
+  .nav-item-inactive {
+    @apply nav-item text-gray-600 hover:bg-gray-100 hover:text-gray-900;
+  }
+  
+  /* Modern Tooltips */
+  .tooltip {
+    @apply absolute z-50 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow-lg pointer-events-none;
+  }
+  
+  /* Loading States */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+  
+  .spinner {
+    @apply animate-spin h-5 w-5 text-primary-600;
+  }
+  
+  /* Dividers */
+  .divider {
+    @apply h-px bg-gray-200 my-4;
+  }
+  
+  .divider-vertical {
+    @apply w-px bg-gray-200 mx-4;
+  }
 }
 
-/* Temporary basic styles */
-.btn-primary {
-  background-color: #0ea5e9;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+@layer utilities {
+  /* Text Utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Animation Utilities */
+  .animate-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  /* Gradient Backgrounds */
+  .bg-gradient-mesh {
+    background-image: 
+      radial-gradient(at 40% 20%, hsla(28,100%,74%,0.3) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(189,100%,56%,0.3) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(355,100%,93%,0.3) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, hsla(340,100%,76%,0.3) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(225,100%,77%,0.3) 0px, transparent 50%),
+      radial-gradient(at 80% 100%, hsla(242,100%,70%,0.3) 0px, transparent 50%),
+      radial-gradient(at 0% 0%, hsla(343,100%,76%,0.3) 0px, transparent 50%);
+  }
+  
+  /* Modern Shadows */
+  .shadow-soft-xl {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg;
+  }
+  
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-200 hover:shadow-glow-sm;
+  }
 }
 
-.btn-primary:hover {
-  background-color: #0284c7;
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+@keyframes glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-.card {
-  background: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  padding: 1.5rem;
+/* Loading Shimmer Effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+  transform: translateX(-100%);
 }
 
-.form-input {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-}
-
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-.btn-secondary {
-  background-color: #6b7280;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-secondary:hover {
-  background-color: #4b5563;
-}
-
-.btn-secondary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-danger {
-  background-color: #dc2626;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-danger:hover {
-  background-color: #b91c1c;
-}
-
-.btn-danger:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
