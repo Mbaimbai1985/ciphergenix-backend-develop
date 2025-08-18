@@ -10,14 +10,14 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
-import { VulnerabilityDetectionAPI, DetectionResult, DetectionStatistics, ApiUtils } from '../services/api';
+// import { VulnerabilityDetectionAPI, DetectionResult, DetectionStatistics, ApiUtils } from '../services/api';
 import WelcomeMessage from './WelcomeMessage';
 
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [systemHealth, setSystemHealth] = useState('healthy');
+  const [systemHealth] = useState('healthy');
   const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {

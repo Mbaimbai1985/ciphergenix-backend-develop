@@ -6,7 +6,7 @@ import {
   StopIcon,
   DocumentArrowUpIcon,
   CpuChipIcon,
-  ChartBarIcon,
+  // ChartBarIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
   ClockIcon,

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ModelIntegrityAPI, ApiUtils } from '../services/api';
+import React, { useState, useEffect, useCallback } from 'react';
+// import { ModelIntegrityAPI, ApiUtils } from '../services/api';
 
 interface ModelIntegrityProps {}
 
@@ -43,7 +43,7 @@ interface TheftAnalysis {
 
 const ModelIntegrity: React.FC<ModelIntegrityProps> = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'fingerprinting' | 'monitoring' | 'theft'>('overview');
-  const [models, setModels] = useState<string[]>(['model_001', 'model_002', 'model_003', 'model_004', 'model_005']);
+  const [models] = useState<string[]>(['model_001', 'model_002', 'model_003', 'model_004', 'model_005']);
   const [selectedModel, setSelectedModel] = useState<string>('model_001');
   const [fingerprints, setFingerprints] = useState<ModelFingerprint[]>([]);
   const [performanceMetrics, setPerformanceMetrics] = useState<PerformanceMetrics | null>(null);
@@ -51,11 +51,7 @@ const ModelIntegrity: React.FC<ModelIntegrityProps> = () => {
   const [isMonitoring, setIsMonitoring] = useState<Record<string, boolean>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     setIsLoading(true);
     try {
       // Simulate loading dashboard data
@@ -83,7 +79,11 @@ const ModelIntegrity: React.FC<ModelIntegrityProps> = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [models, selectedModel]);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   const loadPerformanceMetrics = async (modelId: string) => {
     try {
@@ -204,15 +204,15 @@ const ModelIntegrity: React.FC<ModelIntegrityProps> = () => {
     }
   };
 
-  const getRiskLevelColor = (riskLevel: string) => {
-    switch (riskLevel) {
-      case 'LOW': return 'text-green-600 bg-green-100';
-      case 'MEDIUM': return 'text-yellow-600 bg-yellow-100';
-      case 'HIGH': return 'text-orange-600 bg-orange-100';
-      case 'CRITICAL': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
+  // const getRiskLevelColor = (riskLevel: string) => {
+  //   switch (riskLevel) {
+  //     case 'LOW': return 'text-green-600 bg-green-100';
+  //     case 'MEDIUM': return 'text-yellow-600 bg-yellow-100';
+  //     case 'HIGH': return 'text-orange-600 bg-orange-100';
+  //     case 'CRITICAL': return 'text-red-600 bg-red-100';
+  //     default: return 'text-gray-600 bg-gray-100';
+  //   }
+  // };
 
   const containerStyle: React.CSSProperties = {
     padding: '1.5rem',

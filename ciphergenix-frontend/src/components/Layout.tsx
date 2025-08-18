@@ -18,11 +18,11 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-interface NavigationItem {
-  name: string;
-  href: string;
-  badge?: string;
-}
+// interface NavigationItem {
+//   name: string;
+//   href: string;
+//   badge?: string;
+// }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

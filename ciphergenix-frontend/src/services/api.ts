@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 // API Configuration
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 const VULNERABILITY_SERVICE_URL = process.env.REACT_APP_VULNERABILITY_SERVICE_URL || 'http://localhost:8081';
 const MODEL_INTEGRITY_SERVICE_URL = process.env.REACT_APP_MODEL_INTEGRITY_SERVICE_URL || 'http://localhost:8082';
 const SECURITY_ENGINE_SERVICE_URL = process.env.REACT_APP_SECURITY_ENGINE_SERVICE_URL || 'http://localhost:8083';
@@ -454,10 +454,12 @@ export class ApiError extends Error {
 }
 
 // Export default API instance
-export default {
+const ApiService = {
   VulnerabilityDetection: VulnerabilityDetectionAPI,
   ModelIntegrity: ModelIntegrityAPI,
   SecurityEngine: SecurityEngineAPI,
   Utils: ApiUtils,
   Error: ApiError,
 };
+
+export default ApiService;
