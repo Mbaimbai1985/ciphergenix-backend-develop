@@ -9,39 +9,39 @@ import ModelIntegrity from './components/ModelIntegrity';
 // Placeholder components for other routes
 
 const Analytics = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">Analytics</h1>
+  <div style={{ padding: '1.5rem' }}>
+    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '1rem' }}>Analytics</h1>
     <div className="card">
-      <p className="text-gray-600">Advanced analytics dashboard coming soon...</p>
+      <p style={{ color: '#6b7280' }}>Advanced analytics dashboard coming soon...</p>
     </div>
   </div>
 );
 
 const Settings = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">Settings</h1>
+  <div style={{ padding: '1.5rem' }}>
+    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '1rem' }}>Settings</h1>
     <div className="card">
-      <p className="text-gray-600">Application settings coming soon...</p>
+      <p style={{ color: '#6b7280' }}>Application settings coming soon...</p>
     </div>
   </div>
 );
 
 // Data Poisoning Detection Page
 const DataPoisoningDetection = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">Data Poisoning Detection</h1>
+  <div style={{ padding: '1.5rem' }}>
+    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '1rem' }}>Data Poisoning Detection</h1>
     <div className="card">
-      <p className="text-gray-600">Specialized data poisoning detection interface...</p>
+      <p style={{ color: '#6b7280' }}>Specialized data poisoning detection interface...</p>
     </div>
   </div>
 );
 
 // Adversarial Attack Detection Page
 const AdversarialDetection = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold text-gray-900 mb-4">Adversarial Attack Detection</h1>
+  <div style={{ padding: '1.5rem' }}>
+    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '1rem' }}>Adversarial Attack Detection</h1>
     <div className="card">
-      <p className="text-gray-600">Adversarial attack detection interface...</p>
+      <p style={{ color: '#6b7280' }}>Adversarial attack detection interface...</p>
     </div>
   </div>
 );
