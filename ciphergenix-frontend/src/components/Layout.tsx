@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  HomeIcon, 
+  ShieldCheckIcon, 
+  CpuChipIcon, 
+  ChartBarIcon, 
+  Cog6ToothIcon,
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+  Bars3Icon,
+  XMarkIcon
+} from '@heroicons/react/24/outline';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,12 +29,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
 
-  const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: '/' },
-    { name: 'Threat Detection', href: '/threat-detection', badge: '3' },
-    { name: 'AI Models', href: '/ai-models' },
-    { name: 'Analytics', href: '/analytics' },
-    { name: 'Settings', href: '/settings' },
+  const navigation = [
+    { name: 'Dashboard', href: '/', icon: HomeIcon },
+    { name: 'Threat Detection', href: '/threat-detection', badge: '3', icon: ShieldCheckIcon },
+    { name: 'AI Models', href: '/ai-models', icon: CpuChipIcon },
+    { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
+    { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
   ];
 
   const isActiveRoute = (href: string) => {
@@ -31,244 +44,175 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return location.pathname.startsWith(href);
   };
 
-  const layoutStyle: React.CSSProperties = {
-    height: '100vh',
-    display: 'flex',
-    overflow: 'hidden',
-    backgroundColor: '#f9fafb',
+  const sidebarVariants = {
+    open: { x: 0 },
+    closed: { x: '-100%' }
   };
 
-  const sidebarStyle: React.CSSProperties = {
-    width: '256px',
-    backgroundColor: 'white',
-    borderRight: '1px solid #e5e7eb',
-    display: 'flex',
-    flexDirection: 'column',
-  };
 
-  const logoStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '64px',
-    padding: '0 1rem',
-    backgroundColor: '#0ea5e9',
-  };
 
-  const logoTextStyle: React.CSSProperties = {
-    fontSize: '1.25rem',
-    fontWeight: 'bold',
-    color: 'white',
-    marginLeft: '0.5rem',
-  };
 
-  const navStyle: React.CSSProperties = {
-    flex: 1,
-    padding: '1.5rem 1rem',
-    overflowY: 'auto',
-  };
 
-  const navLinkStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0.75rem',
-    marginBottom: '0.5rem',
-    borderRadius: '0.5rem',
-    textDecoration: 'none',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    transition: 'all 0.2s',
-  };
 
-  const activeNavLinkStyle: React.CSSProperties = {
-    ...navLinkStyle,
-    backgroundColor: '#dbeafe',
-    color: '#1d4ed8',
-  };
 
-  const inactiveNavLinkStyle: React.CSSProperties = {
-    ...navLinkStyle,
-    color: '#6b7280',
-  };
 
-  const badgeStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '0.125rem 0.5rem',
-    borderRadius: '9999px',
-    fontSize: '0.75rem',
-    fontWeight: '500',
-    backgroundColor: '#fecaca',
-    color: '#dc2626',
-  };
 
-  const mainContentStyle: React.CSSProperties = {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-  };
 
-  const topNavStyle: React.CSSProperties = {
-    height: '64px',
-    backgroundColor: 'white',
-    borderBottom: '1px solid #e5e7eb',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 1.5rem',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-  };
 
-  const searchStyle: React.CSSProperties = {
-    flex: 1,
-    padding: '0.5rem 1rem',
-    border: '1px solid #d1d5db',
-    borderRadius: '0.5rem',
-    fontSize: '0.875rem',
-    outline: 'none',
-  };
 
-  const contentStyle: React.CSSProperties = {
-    flex: 1,
-    overflow: 'auto',
-  };
+
+
+
+
+
 
   return (
-    <div style={layoutStyle}>
-      {/* Desktop sidebar */}
-      <div style={sidebarStyle}>
+    <div className="h-screen flex overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Mobile sidebar backdrop */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar */}
+      <motion.div
+        initial={false}
+        animate={sidebarOpen ? "open" : "closed"}
+        variants={sidebarVariants}
+        className="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white/90 backdrop-blur-xl border-r border-gray-200/50 shadow-xl lg:shadow-none flex flex-col"
+      >
         {/* Logo */}
-        <div style={logoStyle}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            backgroundColor: 'white',
-            borderRadius: '0.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <span style={{ color: '#0ea5e9', fontSize: '1.25rem' }}>🛡️</span>
+        <div className="flex items-center justify-between h-16 px-6 bg-gradient-to-r from-cyber-500 to-cyber-600">
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md">
+              <span className="text-cyber-500 text-xl font-bold">🛡️</span>
+            </div>
+            <span className="ml-3 text-white font-bold text-lg">CipherGenix</span>
           </div>
-          <span style={logoTextStyle}>CipherGenix</span>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden text-white/80 hover:text-white p-1 rounded-md"
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation */}
-        <nav style={navStyle}>
-          <div>
-            {navigation.map((item) => (
-              <Link
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          {navigation.map((item, index) => {
+            const Icon = item.icon;
+            const active = isActiveRoute(item.href);
+            return (
+              <motion.div
                 key={item.name}
-                to={item.href}
-                style={isActiveRoute(item.href) ? activeNavLinkStyle : inactiveNavLinkStyle}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
-                <span>{item.name}</span>
-                {item.badge && (
-                  <span style={badgeStyle}>{item.badge}</span>
-                )}
-              </Link>
-            ))}
-          </div>
+                <Link
+                  to={item.href}
+                  className={`${
+                    active ? 'nav-item-active' : 'nav-item text-gray-600 hover:text-gray-900'
+                  }`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <div className="flex items-center">
+                    <Icon className="w-5 h-5 mr-3" />
+                    <span>{item.name}</span>
+                  </div>
+                  {item.badge && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-danger-100 text-danger-700">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
+            );
+          })}
         </nav>
 
         {/* User Profile */}
-        <div style={{
-          padding: '1rem',
-          backgroundColor: '#f9fafb',
-          borderTop: '1px solid #e5e7eb',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              backgroundColor: '#0ea5e9',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <span style={{ color: 'white', fontSize: '0.875rem' }}>👤</span>
+        <div className="p-4 bg-gray-50/50 border-t border-gray-200/50">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-cyber-500 to-cyber-600 rounded-full flex items-center justify-center shadow-md">
+              <UserCircleIcon className="w-6 h-6 text-white" />
             </div>
-            <div style={{ marginLeft: '0.75rem' }}>
-              <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: '500', color: '#111827' }}>
-                Admin User
-              </p>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: '#6b7280' }}>
-                Security Analyst
-              </p>
+            <div className="ml-3">
+              <p className="text-sm font-semibold text-gray-900">Admin User</p>
+              <p className="text-xs text-gray-500">Security Analyst</p>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main content */}
-      <div style={mainContentStyle}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top navigation */}
-        <div style={topNavStyle}>
-          <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: '1rem' }}>
-            <input
-              type="search"
-              placeholder="Search threats, models, or alerts..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={searchStyle}
-            />
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              {/* Notifications */}
-              <button style={{
-                backgroundColor: 'white',
-                border: 'none',
-                padding: '0.5rem',
-                borderRadius: '50%',
-                color: '#6b7280',
-                position: 'relative',
-                cursor: 'pointer',
-              }}>
-                <span style={{ fontSize: '1.25rem' }}>🔔</span>
-                <div style={{
-                  position: 'absolute',
-                  top: '0',
-                  right: '0',
-                  width: '12px',
-                  height: '12px',
-                  backgroundColor: '#ef4444',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <span style={{ color: 'white', fontSize: '0.625rem', fontWeight: '500' }}>3</span>
-                </div>
+        <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
+          <div className="flex items-center justify-between h-full px-6">
+            <div className="flex items-center flex-1 max-w-2xl">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden mr-4 p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              >
+                <Bars3Icon className="w-5 h-5" />
               </button>
+              
+              <div className="relative flex-1">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="search"
+                  placeholder="Search threats, models, or alerts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyber-500 focus:border-cyber-500 bg-white/80 backdrop-blur-sm transition-all"
+                />
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {/* Notifications */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative p-2 rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              >
+                <BellIcon className="w-6 h-6" />
+                <span className="absolute top-0 right-0 w-3 h-3 bg-danger-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">3</span>
+                </span>
+              </motion.button>
 
               {/* Profile */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{
-                  width: '32px',
-                  height: '32px',
-                  backgroundColor: '#0ea5e9',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <span style={{ color: 'white', fontSize: '0.875rem' }}>👤</span>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-cyber-500 to-cyber-600 rounded-full flex items-center justify-center shadow-md">
+                  <UserCircleIcon className="w-5 h-5 text-white" />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#111827' }}>
-                    Admin User
-                  </span>
+                <div className="hidden md:block">
+                  <p className="text-sm font-semibold text-gray-900">Admin User</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Main content area */}
-        <main style={contentStyle}>
-          {children}
+        <main className="flex-1 overflow-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="h-full"
+          >
+            {children}
+          </motion.div>
         </main>
       </div>
     </div>

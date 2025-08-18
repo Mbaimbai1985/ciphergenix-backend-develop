@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  ShieldCheckIcon,
+  CpuChipIcon,
+  ChartBarIcon,
+  ClockIcon,
+  TrendingUpIcon,
+  TrendingDownIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon
+} from '@heroicons/react/24/outline';
 import { VulnerabilityDetectionAPI, DetectionResult, DetectionStatistics, ApiUtils } from '../services/api';
 import WelcomeMessage from './WelcomeMessage';
 
@@ -23,95 +34,109 @@ const Dashboard: React.FC<DashboardProps> = () => {
     localStorage.setItem('ciphergenix_welcome_seen', 'true');
   };
 
-  const dashboardStyle: React.CSSProperties = {
-    minHeight: '100vh',
-    backgroundColor: '#f9fafb',
-    padding: '1.5rem',
+  const metrics = [
+    {
+      title: 'Total Threats Detected',
+      value: '42',
+      change: '+12.3%',
+      changeType: 'increase',
+      icon: ShieldCheckIcon,
+      color: 'danger'
+    },
+    {
+      title: 'AI Models Active',
+      value: '12',
+      change: '+2 new models',
+      changeType: 'increase',
+      icon: CpuChipIcon,
+      color: 'success'
+    },
+    {
+      title: 'Detection Accuracy',
+      value: '94.8%',
+      change: '+1.2% improvement',
+      changeType: 'increase',
+      icon: ChartBarIcon,
+      color: 'success'
+    },
+    {
+      title: 'Response Time',
+      value: '127ms',
+      change: '-15ms faster',
+      changeType: 'decrease',
+      icon: ClockIcon,
+      color: 'success'
+    }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   };
 
-  const headerStyle: React.CSSProperties = {
-    backgroundColor: 'white',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-    borderBottom: '1px solid #e5e7eb',
-    padding: '1rem 1.5rem',
-    marginBottom: '1.5rem',
-    borderRadius: '0.75rem',
-  };
-
-  const titleStyle: React.CSSProperties = {
-    fontSize: '1.875rem',
-    fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #d946ef 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-    margin: 0,
-  };
-
-  const subtitleStyle: React.CSSProperties = {
-    color: '#6b7280',
-    marginTop: '0.25rem',
-    margin: 0,
-  };
-
-  const gridStyle: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem',
-  };
-
-  const metricCardStyle: React.CSSProperties = {
-    backgroundColor: 'white',
-    borderRadius: '0.75rem',
-    padding: '1.5rem',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-    border: '1px solid #e5e7eb',
-    transition: 'box-shadow 0.2s',
-  };
-
-  const statusStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '0.25rem 0.75rem',
-    borderRadius: '9999px',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    backgroundColor: systemHealth === 'healthy' ? '#dcfce7' : '#fef3c7',
-    color: systemHealth === 'healthy' ? '#16a34a' : '#d97706',
-  };
-
-  const statusDotStyle: React.CSSProperties = {
-    width: '0.5rem',
-    height: '0.5rem',
-    borderRadius: '50%',
-    backgroundColor: systemHealth === 'healthy' ? '#16a34a' : '#d97706',
-    marginRight: '0.5rem',
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5
+      }
+    }
   };
 
   return (
-    <div style={dashboardStyle}>
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="min-h-screen p-6 space-y-6"
+    >
+      {/* Welcome Message */}
+      {showWelcome && (
+        <motion.div variants={itemVariants}>
+          <WelcomeMessage onDismiss={handleWelcomeDismiss} />
+        </motion.div>
+      )}
+
       {/* Header */}
-      <div style={headerStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <motion.div variants={itemVariants} className="glass-card p-6 rounded-xl">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 style={titleStyle}>CipherGenix AI Security Platform</h1>
-            <p style={subtitleStyle}>Real-time threat detection and AI model protection</p>
+            <h1 className="text-3xl font-bold gradient-text mb-2">
+              CipherGenix AI Security Platform
+            </h1>
+            <p className="text-gray-600">
+              Real-time threat detection and AI model protection
+            </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={statusStyle}>
-              <div style={statusDotStyle}></div>
+          <div className="flex items-center space-x-4">
+            <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold ${
+              systemHealth === 'healthy' 
+                ? 'bg-success-100 text-success-700' 
+                : 'bg-warning-100 text-warning-700'
+            }`}>
+              <div className={`w-2 h-2 rounded-full mr-2 status-pulse ${
+                systemHealth === 'healthy' ? 'bg-success-500' : 'bg-warning-500'
+              }`}></div>
               <span>System {systemHealth === 'healthy' ? 'Healthy' : 'Warning'}</span>
             </div>
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className="btn-primary"
               disabled={isLoading}
             >
               {isLoading ? 'Loading...' : 'Refresh'}
-            </button>
+            </motion.button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Metrics Grid */}
       <div style={gridStyle}>
