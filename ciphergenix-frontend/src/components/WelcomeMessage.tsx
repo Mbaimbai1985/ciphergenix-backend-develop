@@ -28,210 +28,101 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="welcome-message-container"
-          style={{
-            position: 'relative',
-            marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            borderRadius: '16px',
-            padding: '0px',
-            overflow: 'hidden',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-          }}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 shadow-2xl border border-white/10"
         >
           {/* Background Pattern */}
-          <div 
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: `
-                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)
-              `,
-              pointerEvents: 'none',
-            }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 pointer-events-none" />
           
           {/* Close Button */}
           <button
             onClick={handleDismiss}
-            style={{
-              position: 'absolute',
-              top: '1rem',
-              right: '1rem',
-              background: 'rgba(255, 255, 255, 0.2)',
-              border: 'none',
-              borderRadius: '50%',
-              width: '32px',
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              zIndex: 10,
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
-              e.currentTarget.style.transform = 'scale(1.1)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
+            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 hover:scale-110 text-white"
           >
-            <XMarkIcon style={{ width: '16px', height: '16px', color: 'white' }} />
+            <XMarkIcon className="w-4 h-4" />
           </button>
 
-          <div style={{ padding: '2rem', position: 'relative', zIndex: 5 }}>
+          <div className="relative z-5 p-8">
             {/* Header with Icons */}
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              marginBottom: '1.5rem',
-              gap: '1rem'
-            }}>
-              <div style={{ 
-                display: 'flex', 
-                gap: '0.5rem',
-                alignItems: 'center'
-              }}>
+            <div className="flex items-center mb-6 gap-4">
+              <div className="flex gap-2 items-center">
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    padding: '0.5rem',
-                    borderRadius: '8px',
-                  }}
+                  className="p-2 rounded-lg bg-white/20 backdrop-blur-sm"
                 >
-                  <ShieldCheckIcon style={{ width: '24px', height: '24px', color: 'white' }} />
+                  <ShieldCheckIcon className="w-6 h-6 text-white" />
                 </motion.div>
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 2, delay: 0.5 }}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    padding: '0.5rem',
-                    borderRadius: '8px',
-                  }}
+                  className="p-2 rounded-lg bg-white/20 backdrop-blur-sm"
                 >
-                  <CpuChipIcon style={{ width: '24px', height: '24px', color: 'white' }} />
+                  <CpuChipIcon className="w-6 h-6 text-white" />
                 </motion.div>
                 <motion.div
                   animate={{ rotate: [0, -10, 10, 0] }}
                   transition={{ duration: 2, repeat: Infinity, repeatDelay: 4, delay: 1 }}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    padding: '0.5rem',
-                    borderRadius: '8px',
-                  }}
+                  className="p-2 rounded-lg bg-white/20 backdrop-blur-sm"
                 >
-                  <LockClosedIcon style={{ width: '24px', height: '24px', color: 'white' }} />
+                  <LockClosedIcon className="w-6 h-6 text-white" />
                 </motion.div>
               </div>
             </div>
 
             {/* Welcome Message */}
-            <div style={{ color: 'white' }}>
-              <h2 style={{ 
-                fontSize: '1.5rem', 
-                fontWeight: 'bold', 
-                marginBottom: '1rem', 
-                color: 'white',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-              }}>
+            <div className="text-white">
+              <h2 className="text-2xl font-bold mb-4 text-white drop-shadow-lg">
                 Hi {userName}! 👋
               </h2>
               
-              <div style={{ 
-                fontSize: '1rem', 
-                lineHeight: '1.6', 
-                marginBottom: '1.5rem',
-                color: 'rgba(255, 255, 255, 0.95)',
-                textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
-              }}>
-                <p style={{ marginBottom: '1rem' }}>
+              <div className="text-base leading-relaxed mb-6 text-white/95 drop-shadow-md space-y-4">
+                <p>
                   Welcome to <strong>CipherGenix</strong>! 🛡️ We're here to protect your AI systems with cutting-edge security using advanced machine learning and real-time threat detection. Whether you're monitoring model integrity, detecting adversarial attacks, or ensuring data security, we've got the tools and intelligence to keep your AI infrastructure safe.
                 </p>
                 
-                <p style={{ marginBottom: '1rem' }}>
+                <p>
                   Get started by exploring your <strong>Security Dashboard</strong>, run threat detection scans, or monitor your AI models for integrity issues. Our platform uses state-of-the-art algorithms to provide comprehensive protection.
                 </p>
                 
-                <p style={{ marginBottom: '0' }}>
+                <p>
                   Need help? Our security team is just a message away! 🚀
                 </p>
               </div>
 
               {/* Feature Highlights */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '1rem',
-                marginBottom: '1.5rem'
-              }}>
-                <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
-                }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200">
+                  <h4 className="font-bold mb-2 text-sm">
                     🎯 AI Threat Detection
                   </h4>
-                  <p style={{ fontSize: '0.8rem', opacity: 0.9, margin: 0 }}>
+                  <p className="text-xs opacity-90">
                     Advanced algorithms to detect data poisoning and adversarial attacks
                   </p>
                 </div>
                 
-                <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
-                }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+                <div className="p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200">
+                  <h4 className="font-bold mb-2 text-sm">
                     🤖 Model Integrity
                   </h4>
-                  <p style={{ fontSize: '0.8rem', opacity: 0.9, margin: 0 }}>
+                  <p className="text-xs opacity-90">
                     Real-time monitoring and verification of your AI models
                   </p>
                 </div>
                 
-                <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)'
-                }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
+                <div className="p-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-colors duration-200">
+                  <h4 className="font-bold mb-2 text-sm">
                     🔒 Security Engine
                   </h4>
-                  <p style={{ fontSize: '0.8rem', opacity: 0.9, margin: 0 }}>
+                  <p className="text-xs opacity-90">
                     Comprehensive encryption and secure file operations
                   </p>
                 </div>
               </div>
 
               {/* Sign-off */}
-              <div style={{ 
-                fontSize: '1rem', 
-                fontWeight: '500',
-                textAlign: 'left',
-                color: 'rgba(255, 255, 255, 0.95)',
-                textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)'
-              }}>
-                <p style={{ margin: 0, marginBottom: '0.25rem' }}>Cheers,</p>
-                <p style={{ margin: 0, fontWeight: 'bold' }}>The CipherGenix Security Team 🛡️</p>
+              <div className="text-base font-medium text-left text-white/95 drop-shadow-md">
+                <p className="mb-1">Cheers,</p>
+                <p className="font-bold">The CipherGenix Security Team 🛡️</p>
               </div>
             </div>
           </div>
