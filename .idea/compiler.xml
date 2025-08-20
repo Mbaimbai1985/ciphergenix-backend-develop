@@ -4,5 +4,13 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="authorizationserver" target="21" />
+      <module name="discoveryservice" target="21" />
+      <module name="gateway" target="21" />
+      <module name="notificationservice" target="21" />
+      <module name="paymentservicepractice" target="21" />
+      <module name="userservice" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
